@@ -13,13 +13,13 @@ let int_of_string_opt s =
   | _ -> None
 
 let rec parse (sexp : Sexp.t) =
-  (* TODO *) failwith "Not yet implemented"
+  (* TODO *) failwith "Not yet implemented: parse"
 
 and parse_binding binding =
-  (* TODO *) failwith "Not yet implemented"
+  (* TODO *) failwith "Not yet implemented: parse_binding"
 
 let parse_def sexp =
-  (* TODO *) failwith "Not yet implemented"
+  (* TODO *) failwith "Not yet implemented: parse_def"
 
 let rec parse_program sexps =
   match sexps with

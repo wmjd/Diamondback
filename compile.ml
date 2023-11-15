@@ -25,11 +25,11 @@ let rec well_formed_e (e : expr) (env : (string * int) list) : string list =
   | ENumber(_)
   | EBool(_) -> []
   (* TODO *)
-  | _ -> failwith "Not yet implemented"
+  | _ -> failwith "Not yet implemented: well_formed_e"
 
 let well_formed_def (DFun(name, args, ret, body)) =
   (* TODO *)
-  failwith "Not yet implemented"
+  failwith "Not yet implemented: well_formed_def"
 
 let well_formed_prog (defs, main) =
   (* TODO *)
@@ -43,19 +43,19 @@ let check p : string list =
 let rec compile_expr (e : expr) (si : int) (env : (string * int) list) def_env
   : instruction list =
   (* TODO *)
-  failwith "Not yet implemented"
+  failwith "Not yet implemented: compile_expr"
 
 and compile_prim1 op e si env def_env =
   (* TODO *)
-  failwith "Not yet implemented"
+  failwith "Not yet implemented: compile_prim1"
 
 and compile_prim2 op e1 e2 si env def_env =
   (* TODO *)
-  failwith "Not yet implemented"
+  failwith "Not yet implemented: compile_prim2"
 
 and compile_def (DFun(name, args, ret, body)) def_env =
   (* TODO *)
-  failwith "Not yet implemented"
+  failwith "Not yet implemented: compile_def"
 
 let compile_to_string ((defs, main) as prog : Expr.prog) =
   let _ = check prog in

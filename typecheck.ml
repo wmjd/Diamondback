@@ -18,11 +18,11 @@ let rec tc_e (e : expr) (env : (string * typ) list) (def_env : def_env) : typ =
   | ENumber(_) -> TNum
   | EBool(_) -> TBool
   (* TODO *)
-  | _ -> failwith "Not yet implemented"
+  | _ -> failwith "Not yet implemented: tc_e"
     
 let tc_def def_env (DFun(name, args, ret_typ, body)) =
   (* TODO *)
-  failwith "Not yet implemented"
+  failwith "Not yet implemented: tc_def"
 
 let tc_p (defs, main) def_env : typ =
   begin ignore (List.map (tc_def def_env) defs); tc_e main [("input", TNum)] def_env end

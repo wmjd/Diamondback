@@ -30,7 +30,7 @@ output/%.o: output/%.s
 
 output/%.s: input/%.boa main
 	mkdir -p output
-	./main $< > $@
+	./main $< | tee $@
 
 clean:
 	rm -rf output/*.o output/*.s output/*.dSYM output/*.run *.log
