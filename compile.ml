@@ -19,13 +19,48 @@ let stackloc si = RegOffset(-8 * si, RSP)
 
 let true_const  = HexConst(0x0000000000000002L)
 let false_const = HexConst(0x0000000000000000L)
+let tag_mask =    HexConst(0xFFFFFFFFFFFFFFFEL)
 
 let rec well_formed_e (e : expr) (env : (string * int) list) : string list =
-  match e with
+  let dummy_val = 42
+  in let rec ext_env b = 
+    match b with
+    | [] -> []
+    | (x, _)::more -> (x, dummy_val)::(ext_env more)  
+  in let check_duplicates b =
+    let rec dup b x =
+      match b with
+      | [] -> []
+      | (x_prime, v)::more -> if x_prime = x then ["Multiple bindings for variable identifier " ^ x] else dup more x  
+    in let rec walk b env = 
+      match b with 
+      | [] -> []
+      | (x, v)::more -> (dup more x) @ (well_formed_e v env) @ (walk more ((x, dummy_val)::env)) 
+    in walk b env
+  in let well_formed_body body env =
+    let rec aux body =
+      match body with
+      | [] -> failwith "well_formed_body Error: empty body (should have been detected in parsing)"
+      | [e] -> well_formed_e e env
+      | e::more -> (well_formed_e e env) @ (aux more)
+    in aux body
+  in match e with
   | ENumber(_)
   | EBool(_) -> []
-  (* TODO *)
-  | _ -> failwith "Not yet implemented: well_formed_e"
+  | ELet(binding, body) -> (check_duplicates binding) @ (well_formed_body body ((ext_env binding) @ env)) 
+  | EId(x) -> (
+    match find env x with
+    | None -> ["Variable identifier " ^ x ^ " unbound"] 
+    | Some(_) -> [] )
+  | EIf(predicate, if_branch, else_branch) -> (well_formed_e predicate env) @ (well_formed_e if_branch env) @ (well_formed_e else_branch env)
+  | EPrim1(_, arg1) -> (well_formed_e arg1 env)
+  | EPrim2(_, arg1, arg2) -> (well_formed_e arg1 env) @ (well_formed_e arg2 env)
+  | ESet(x, e) -> (
+    match find env x with
+    | None -> ["Variable identifier " ^ x ^ " unbound"] 
+    | Some(_) -> [] ) @ well_formed_e e env 
+  | EWhile(predicate, body) -> (well_formed_e predicate env) @ (well_formed_body body env)
+
 
 let well_formed_def (DFun(name, args, ret, body)) =
   (* TODO *)
