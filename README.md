@@ -1,5 +1,6 @@
 # pa4
-Starter code for pa4
+Starter code:
+https://github.com/ucsd-cse131-f19/pa4-student
 
-Writeup here:
-https://ucsd-cse131-f19.github.io/pa4/
+Writeup:
+https://ucsd-cse131-f19.github.io/pa4/pa4.pdf
