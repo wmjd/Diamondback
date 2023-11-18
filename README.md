@@ -1,4 +1,4 @@
-# pa4
+# Diamondback
 Starter code:
 https://github.com/ucsd-cse131-f19/pa4-student
 
