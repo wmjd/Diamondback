@@ -55,7 +55,7 @@ let rec parse (sexp : Sexp.t) =
             ESet(validID name, parse value)
         | Atom("while")::predicate::body ->
             EWhile(parse predicate, parse_body body)
-        | Atom(x)::more -> let _ = print_endline x in failwith ("Parse error" ^ x) 
+        | Atom(f)::args -> EApp(f, (List.map (fun arg -> parse arg) args))
         | _ -> failwith "Parse error"
 
 and parse_body (expr_sequence : Sexp.t list) : Expr.expr list = 
