@@ -55,6 +55,7 @@ let rec parse (sexp : Sexp.t) =
             ESet(validID name, parse value)
         | Atom("while")::predicate::body ->
             EWhile(parse predicate, parse_body body)
+        | Atom(x)::more -> let _ = print_endline x in failwith ("Parse error" ^ x) 
         | _ -> failwith "Parse error"
 
 and parse_body (expr_sequence : Sexp.t list) : Expr.expr list = 
@@ -71,14 +72,18 @@ and parse_binding (binding : Sexp.t) : (string * Expr.expr) list =
 let parse_def sexp =
   let rec parse_args args =
     match args with
-    | List(Atom(name)::Atom(":")::Atom(t_a)::more) ->
-        name::t_a::(parse_args (List more))
+    | List(Atom(name)::Atom(":")::Atom("Bool")::more) ->
+        (name,TBool)::(parse_args (List more))
+    | List(Atom(name)::Atom(":")::Atom("Num")::more) ->
+        (name,TNum)::(parse_args (List more))
     | List([]) -> []
-    | _ -> failwith "Error: parse_args"
+    | x -> let _ = print_endline (Sexp.to_string x) in failwith "Error: parse_args"
   in match sexp with
-  | List(Atom("def")::Atom(name)::List(args)::Atom(":")::Atom(t_r)::body) ->
-      DFun(name, (parse_args (List args)), t_r, parse_body body) 
-  | _ -> failwith "Error: parse_def"
+  | List(Atom("def")::Atom(name)::List(args)::Atom(":")::Atom("Bool")::body) ->
+      DFun(name, (parse_args (List args)), TBool, parse_body body) 
+  | List(Atom("def")::Atom(name)::List(args)::Atom(":")::Atom("Num")::body) ->
+      DFun(name, (parse_args (List args)), TNum, parse_body body) 
+  | foo  -> let _ = print_endline (Sexp.to_string foo) in failwith "Error: parse_def"
 
 let rec parse_program sexps =
   match sexps with

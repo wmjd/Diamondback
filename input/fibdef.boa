@@ -1,0 +1,14 @@
+(def fib (x : Num) : Num
+  (let ((a 0) (b 1)) 
+    (while (> x 0)
+      (set input (sub1 input))
+      (let ((temp a))
+        (set a b)
+        (set b (+ b temp))
+      )
+    )
+	b
+  )
+)
+
+(fib 4) 
