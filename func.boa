@@ -1,1 +1,0 @@
-(def abs_val (x : Num) : Num (if (< x 0) (* -1 x) x)) (abs_val -3)
