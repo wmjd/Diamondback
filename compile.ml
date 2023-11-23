@@ -60,7 +60,7 @@ let rec well_formed_e (e : expr) (env : (string * int) list) : string list =
     | None -> ["Variable identifier " ^ x ^ " unbound"] 
     | Some(_) -> [] ) @ well_formed_e e env 
   | EWhile(predicate, body) -> (well_formed_e predicate env) @ (well_formed_body body env)
-  | EApp _ -> failwith "not implemented eapp in well formed"
+  | EApp (f, args) -> List.flatten (List.map (fun e -> well_formed_e e env) args)
 
 let well_formed_def (DFun(name, args, ret, body)) =
   (* TODO *)

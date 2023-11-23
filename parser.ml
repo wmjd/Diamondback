@@ -41,6 +41,7 @@ let rec parse (sexp : Sexp.t) =
         | [Atom("sub1"); arg] -> EPrim1(Sub1, parse arg)
         | [Atom("isNum"); arg] -> EPrim1(IsNum, parse arg)
         | [Atom("isBool"); arg] -> EPrim1(IsBool, parse arg)
+        | [Atom("print"); arg] -> EPrim1(Print, parse arg)
         | [Atom("+"); arg1; arg2] -> EPrim2(Plus, parse arg1, parse arg2)
         | [Atom("-"); arg1; arg2] -> EPrim2(Minus, parse arg1, parse arg2)
         | [Atom("*"); arg1; arg2] -> EPrim2(Times, parse arg1, parse arg2)
