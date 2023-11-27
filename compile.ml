@@ -63,8 +63,30 @@ let rec well_formed_e (e : expr) (env : (string * int) list) : string list =
   | EApp (f, args) -> List.flatten (List.map (fun e -> well_formed_e e env) args)
 
 let well_formed_def (DFun(name, args, ret, body)) =
-  (* TODO *)
-  failwith "Not yet implemented: well_formed_def"
+  let dummy_val = 42
+  in let init_env = ["input", dummy_val]
+  in let rec ext_env b = 
+    match b with
+    | [] -> []
+    | (x, _)::more -> (x, dummy_val)::(ext_env more)  
+  in let check_duplicates b =
+    let rec dup b x =
+      match b with
+      | [] -> []
+      | (x_prime, _)::more -> if x_prime = x then ["Multiple bindings for parameter identifier " ^ x] else dup more x  
+    in let rec walk b env = 
+      match b with 
+      | [] -> []
+      | (x, ty)::more -> (dup more x) @ (walk more ((x, dummy_val)::env)) 
+    in walk b init_env
+  in let well_formed_body body env =
+    let rec aux body =
+      match body with
+      | [] -> failwith "well_formed_body Error: empty body (should have been detected in parsing)"
+      | [e] -> well_formed_e e env
+      | e::more -> (well_formed_e e env) @ (aux more)
+    in aux body
+  in (check_duplicates args) @ (well_formed_body body ((ext_env args) @ init_env)) 
 
 let well_formed_prog (defs, main) =
   (* TODO *)
