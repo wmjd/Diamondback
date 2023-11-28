@@ -1,0 +1,4 @@
+(def id (x : Num) : Num
+  true)
+
+(id 5)
